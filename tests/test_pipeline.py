@@ -153,3 +153,36 @@ def test_evidence_cannot_crop_negation(settings):
 def test_short_valid_title(settings):
     result = Pipeline(MockProvider(), settings).run("VPN", "The network connection is slow.")
     assert not result.is_fallback
+
+
+def test_untrusted_field_names_are_not_stored(settings, payload):
+    raw = json.loads(valid_output(payload))
+    raw["confidential-key-name"] = "confidential-value"
+    result = Pipeline(SequenceProvider([json.dumps(raw)]), settings).run(**payload)
+    assert result.is_fallback
+    assert "confidential" not in str(result.errors)
+    assert result.errors[0].details == [{"field": "unknown", "type": "extra_forbidden"}]
+
+
+def test_unicode_prefix_cannot_shift_evidence_context(settings):
+    source = "ß" * 100 + ". There is no confirmed ransomware on this server."
+    raw = json.loads(MockProvider().classify("Security report", source))
+    raw.update(
+        priority="Critical",
+        confidence=0.95,
+        impact="security_incident",
+        evidence="confirmed ransomware on this server",
+    )
+    result = Pipeline(SequenceProvider([json.dumps(raw)]), settings).run("Security report", source)
+    assert result.is_fallback
+    assert result.errors[0].code == "business_rule"
+
+
+def test_unicode_prefix_preserves_valid_evidence_offsets(settings):
+    evidence = "Confirmed ransomware is encrypting files."
+    source = "ß" * 100 + ". " + evidence
+    raw = json.loads(MockProvider().classify("Security report", source))
+    raw["evidence"] = evidence
+    result = Pipeline(SequenceProvider([json.dumps(raw)]), settings).run("Security report", source)
+    assert not result.is_fallback
+    assert result.classification.priority == "Critical"

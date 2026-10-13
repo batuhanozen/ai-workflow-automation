@@ -82,7 +82,7 @@ class OpenAIProvider:
             if not isinstance(content, str) or len(content) > 20000:
                 raise ValueError("Invalid content")
             return content
-        except (ValueError, KeyError, IndexError, TypeError) as exc:
+        except (ValueError, KeyError, IndexError, TypeError, AttributeError) as exc:
             raise ProviderError(
                 "invalid_response", "AI provider returned an invalid response envelope"
             ) from exc

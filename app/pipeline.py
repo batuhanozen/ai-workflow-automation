@@ -36,13 +36,16 @@ class Outcome:
 
 
 def fallback(description: str) -> Classification:
+    excerpt = description[:600].strip()
     return Classification(
         category=Category.GENERAL,
         priority=Priority.MEDIUM,
         summary="Automated classification unavailable; manual triage required.",
         suggested_action="Review the original request and assess its actual urgency manually.",
         confidence=0.0,
-        evidence=description[:600],
+        evidence=excerpt
+        if len(excerpt) >= 8
+        else ("No usable evidence excerpt; review the original request."),
         impact="routine",
     )
 
@@ -73,7 +76,12 @@ class Pipeline:
             except ValidationError as exc:
                 # Never persist raw model output or echoed input from validation errors.
                 details = [
-                    {"field": ".".join(map(str, e["loc"])), "type": e["type"]}
+                    {
+                        "field": "unknown"
+                        if e["type"] == "extra_forbidden"
+                        else ".".join(map(str, e["loc"])),
+                        "type": e["type"],
+                    }
                     for e in exc.errors(include_input=False, include_context=False)
                 ]
                 error = AttemptError(

@@ -172,3 +172,27 @@ def test_activity_includes_review(client, payload):
     assert activity[0]["event"] == "Human review saved"
     assert activity[0]["request_id"] == request["id"]
     assert activity[1]["event"] == "Classification recorded"
+
+
+def test_non_ascii_api_key_is_unauthorized(settings):
+    from pydantic import SecretStr
+
+    settings.api_key = SecretStr("test-key")
+    with TestClient(create_app(settings), raise_server_exceptions=False) as client:
+        assert client.get("/api/stats", headers={"X-API-Key": b"\xff"}).status_code == 401
+
+
+def test_unknown_input_field_names_are_redacted(client, payload):
+    response = client.post("/api/requests", json={**payload, "confidential-key-name": "value"})
+    assert response.status_code == 422
+    assert "confidential-key-name" not in response.text
+    assert response.json()["errors"][0]["field"] == "unknown"
+
+
+def test_whitespace_heavy_request_fails_safely_and_can_be_reviewed(client):
+    request = create(client, {"title": "Sparse input", "description": "a" + " " * 700 + "b"})
+    assert request["status"] == "failed"
+    assert request["is_fallback"]
+    response = client.post(f"/api/requests/{request['id']}/reviews", json=review_payload(request))
+    assert response.status_code == 201
+    assert response.json()["status"] == "failed"

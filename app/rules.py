@@ -37,13 +37,13 @@ class BusinessRuleError(ValueError):
 
 def validate_business_rules(result: Classification, title: str, description: str) -> None:
     source = f"{title}\n{description}"
-    if result.evidence.casefold() not in source.casefold():
+    if result.evidence not in source:
         raise BusinessRuleError("Evidence must quote the submitted request")
     if result.priority == Priority.CRITICAL:
         observed = critical_impact(result.evidence)
         # Check the source context too: a model must not crop 'no' or 'resolved'
         # out of a sentence to manufacture affirmative evidence.
-        start = source.casefold().find(result.evidence.casefold())
+        start = source.find(result.evidence)
         end = start + len(result.evidence)
         left = max(source.rfind(mark, 0, start) for mark in ".!?\n") + 1
         right_marks = [source.find(mark, end) for mark in ".!?\n"]

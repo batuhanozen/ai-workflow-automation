@@ -77,3 +77,11 @@ def test_response_edge_cases(payload, body, code):
     with pytest.raises(ProviderError) as exc:
         provider(lambda r: httpx.Response(200, json=body)).classify(**payload)
     assert exc.value.code == code
+
+
+@pytest.mark.parametrize("message", [None, [], "invalid"])
+def test_non_object_message_is_invalid_response(payload, message):
+    body = {"choices": [{"finish_reason": "stop", "message": message}]}
+    with pytest.raises(ProviderError) as exc:
+        provider(lambda r: httpx.Response(200, json=body)).classify(**payload)
+    assert exc.value.code == "invalid_response"

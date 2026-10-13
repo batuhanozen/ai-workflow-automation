@@ -11,3 +11,10 @@ data
 htmlcov
 tests
 docs
+*.pem
+*.key
+*.db
+*.db-*
+*.sqlite*
+.aws
+.ssh

@@ -146,7 +146,7 @@ Mock mode is a keyword classifier, not a local LLM. It exercises the same valida
 | High | A blocked user or a suspected security issue |
 | Critical | Explicit affirmative evidence of an active/confirmed security incident or widespread outage |
 
-Every automated result must include a verbatim source excerpt. Critical also requires matching impact, confidence of at least 0.8, and an accepted affirmative incident/outage pattern. The validator checks surrounding source context to prevent cropping out a negation. Urgent language alone cannot satisfy the rule. A failed rule sends the ticket to a **failed/manual-triage** state rather than pretending a successful decision.
+Every successful automated result must include a verbatim source excerpt, preserving its original casing. Critical also requires matching impact, confidence of at least 0.8, and an accepted affirmative incident/outage pattern. The validator checks surrounding source context to prevent cropping out a negation. Urgent language alone cannot satisfy the rule. A failed rule sends the ticket to a **failed/manual-triage** state rather than pretending a successful decision.
 
 These checks are conservative heuristics, not independent verification that an incident occurred. They can miss paraphrases and complex negations; confidence is an uncalibrated model self-estimate. Human reviewers may override automated categories and priorities with a recorded explanation.
 
@@ -191,7 +191,7 @@ Retries return `202` and are permitted only for **failed, unreviewed** requests.
 
 A request moves `pending → processing → completed | failed`. Retry moves an eligible failure back to pending; atomic database claims prevent duplicate processing. Reviewing a failure leaves its processing status **failed**. Human review and processing status are separate dimensions.
 
-Transient transport errors, timeouts, HTTP 408/429, and 5xx responses retry after 0.5 and 1 second by default. Permanent HTTP errors, refusals, malformed JSON, invalid schemas, and business-rule failures do not retry. At exhaustion, a neutral General Request / Medium placeholder with zero confidence requires manual triage; it is not an urgency assessment.
+Transient transport errors, timeouts, HTTP 408/429, and 5xx responses retry after 0.5 and 1 second by default. Permanent HTTP errors, refusals, malformed JSON, invalid schemas, and business-rule failures do not retry. At exhaustion, a neutral General Request / Medium placeholder with zero confidence requires manual triage; it is not an urgency assessment. If the input cannot provide a usable excerpt, the fallback explicitly says that evidence is unavailable rather than failing validation itself.
 
 Requests interrupted by process exit are marked failed on the next startup, with an interruption error and explicit fallback. History is never erased by retry. Disk/database failures can leave a processing row for recovery on restart; this is not a durable job queue.
 
@@ -202,12 +202,14 @@ Dashboard totals describe **current request states**, not total historical attem
 ```bash
 pytest --cov=app --cov-report=term-missing
 ruff check .
+ruff format --check .
+npx --yes prettier@3.6.2 --check 'app/static/*'  # Optional frontend formatting check.
 node --check app/static/app.js  # Optional JS syntax check; Node is not needed to run the app.
 ```
 
 Tests use temporary SQLite databases and mocked providers, including an intercepted live HTTP adapter. They cover creation, persistence, strict output validation, invalid JSON, evidence rules, timeout and HTTP failure handling, backoff/exhaustion, fallbacks, retries, restart recovery, concurrent processing claims, optimistic review conflicts, immutable AI history, authentication, and API validation. No paid API access is needed.
 
-GitHub Actions is configured for Python 3.11, 3.12, and 3.13. Local verification and its limits are recorded in [docs/verification.md](docs/verification.md).
+GitHub Actions is configured for Python 3.11, 3.12, and 3.13. Local verification and its limits are recorded in [docs/verification.md](docs/verification.md). The final engineering review, fixes, security checks, and GitHub publication status are in [docs/engineering-review.md](docs/engineering-review.md).
 
 ## Evaluation
 

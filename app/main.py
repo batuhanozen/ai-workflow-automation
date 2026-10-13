@@ -144,7 +144,9 @@ def create_app(settings: Settings | None = None, provider: AIProvider | None = N
 
     def authenticate(x_api_key: Annotated[str | None, Header()] = None) -> None:
         expected = settings.api_key.get_secret_value()
-        if expected and not secrets.compare_digest(x_api_key or "", expected):
+        if expected and not secrets.compare_digest(
+            (x_api_key or "").encode("utf-8"), expected.encode("utf-8")
+        ):
             raise HTTPException(401, "A valid X-API-Key header is required")
 
     DB = Annotated[Session, Depends(get_db)]
@@ -180,7 +182,13 @@ def create_app(settings: Settings | None = None, provider: AIProvider | None = N
             content={
                 "detail": "Input validation failed",
                 "errors": [
-                    {"field": ".".join(map(str, e["loc"])), "type": e["type"]} for e in exc.errors()
+                    {
+                        "field": "unknown"
+                        if e["type"] == "extra_forbidden"
+                        else ".".join(map(str, e["loc"])),
+                        "type": e["type"],
+                    }
+                    for e in exc.errors()
                 ],
             },
         )
