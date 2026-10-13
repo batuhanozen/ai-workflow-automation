@@ -1,0 +1,209 @@
+{
+  "provider": "mock",
+  "model": "deterministic-v1",
+  "dataset_size": 18,
+  "category_accuracy": 0.8889,
+  "priority_accuracy": 0.8333,
+  "schema_validation_success_rate": 1.0,
+  "processing_success_rate": 1.0,
+  "cases": [
+    {
+      "title": "Password reset needed",
+      "expected_category": "Account Access",
+      "actual_category": "Account Access",
+      "expected_priority": "Medium",
+      "actual_priority": "Medium",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Locked out of workspace",
+      "expected_category": "Account Access",
+      "actual_category": "Account Access",
+      "expected_priority": "High",
+      "actual_priority": "High",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Reporting application crashes",
+      "expected_category": "Software Issue",
+      "actual_category": "Software Issue",
+      "expected_priority": "Medium",
+      "actual_priority": "Medium",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Cosmetic export bug",
+      "expected_category": "Software Issue",
+      "actual_category": "Software Issue",
+      "expected_priority": "Low",
+      "actual_priority": "Low",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Database latency increase",
+      "expected_category": "Infrastructure",
+      "actual_category": "Infrastructure",
+      "expected_priority": "Medium",
+      "actual_priority": "Medium",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Production network outage",
+      "expected_category": "Infrastructure",
+      "actual_category": "Infrastructure",
+      "expected_priority": "Critical",
+      "actual_priority": "Critical",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Suspicious phishing email",
+      "expected_category": "Security",
+      "actual_category": "Security",
+      "expected_priority": "High",
+      "actual_priority": "High",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Confirmed ransomware incident",
+      "expected_category": "Security",
+      "actual_category": "Security",
+      "expected_priority": "Critical",
+      "actual_priority": "Critical",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Printer queue stuck",
+      "expected_category": "IT Support",
+      "actual_category": "IT Support",
+      "expected_priority": "Medium",
+      "actual_priority": "Medium",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "New monitor request",
+      "expected_category": "IT Support",
+      "actual_category": "IT Support",
+      "expected_priority": "Low",
+      "actual_priority": "Low",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Training schedule",
+      "expected_category": "General Request",
+      "actual_category": "General Request",
+      "expected_priority": "Low",
+      "actual_priority": "Low",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "URGENT! Need information NOW",
+      "expected_category": "General Request",
+      "actual_category": "General Request",
+      "expected_priority": "Low",
+      "actual_priority": "Low",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Simulated security drill",
+      "expected_category": "Security",
+      "actual_category": "Security",
+      "expected_priority": "High",
+      "actual_priority": "High",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Resolved network incident",
+      "expected_category": "Infrastructure",
+      "actual_category": "Infrastructure",
+      "expected_priority": "Low",
+      "actual_priority": "Medium",
+      "category_correct": true,
+      "priority_correct": false,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Request language attack",
+      "expected_category": "General Request",
+      "actual_category": "General Request",
+      "expected_priority": "Low",
+      "actual_priority": "Low",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Connection to warehouse unavailable",
+      "expected_category": "Infrastructure",
+      "actual_category": "General Request",
+      "expected_priority": "Critical",
+      "actual_priority": "Low",
+      "category_correct": false,
+      "priority_correct": false,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Access token expired",
+      "expected_category": "Account Access",
+      "actual_category": "General Request",
+      "expected_priority": "Medium",
+      "actual_priority": "Low",
+      "category_correct": false,
+      "priority_correct": false,
+      "schema_valid": true,
+      "processing_success": true
+    },
+    {
+      "title": "Laptop blocks daily tasks",
+      "expected_category": "IT Support",
+      "actual_category": "IT Support",
+      "expected_priority": "High",
+      "actual_priority": "High",
+      "category_correct": true,
+      "priority_correct": true,
+      "schema_valid": true,
+      "processing_success": true
+    }
+  ]
+}
