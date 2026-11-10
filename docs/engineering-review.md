@@ -1,8 +1,10 @@
 # Final engineering review
 
-Review date: 2026-10-13. Reviewed baseline: `2e94f71013dbd5f08390713788e25f1725721c16` on `main`.
+Review date: 2026-10-13. Reviewed baseline: `2e94f71013dbd5f08390713788e25f1725721c16` on `main`. The review's fixes were committed afterwards as `246fbb8` (`Update 2`) and pushed to `origin/main`.
 
-**Assessment:** the core offline MVP works and is suitable for a portfolio demonstration. This review fixed reproducible failure-handling and validation edge cases without changing the architecture. Container execution, a paid live LLM call, and cross-platform CI remain verification gaps. The review changes are local and need a separate commit and push.
+**Assessment:** the core offline MVP works and is suitable for a portfolio demonstration. This review fixed reproducible failure-handling and validation edge cases without changing the architecture. Container execution, a paid live LLM call, and cross-platform CI remain verification gaps.
+
+Re-check on 2026-11-10: on `246fbb8`, a fresh Python 3.13.3 virtual environment gave 70 passing tests (99% coverage), clean `ruff check` and `ruff format --check`, a passing `node --check`, and a working `python -m scripts.evaluate`. Remote GitHub Actions results were not inspected.
 
 ## Scope and required features
 
@@ -91,8 +93,8 @@ The Dockerfile installs the Python package and bundled assets, uses a non-root a
 
 - Validate the container with `docker compose up --build` on a Docker-enabled machine, then test health, submit/review, restart persistence, and non-root volume writes.
 - Run one synthetic live-provider smoke test with an explicitly configured credential; model/schema compatibility and paid inference quality have not been verified.
-- Run GitHub Actions on the final review commit. The baseline is pushed, but these fixes have not been committed or pushed by this review.
-- Pin a tested dependency set/lockfile and add recurring dependency/secret scanning. Current dependency ranges can resolve differently in future installs.
+- Check the GitHub Actions results for the latest commit; the workflow now also enforces a coverage floor, frontend checks, and a Docker build, none of which have run remotely yet.
+- Pin a tested dependency set/lockfile and add secret scanning. Dependabot is configured for weekly updates of pip, GitHub Actions, and Docker base images, but dependency ranges can still resolve differently in future installs.
 - Add a durable queue, job leases and bounded capacity before scaling beyond one process. Startup recovery assumes exclusive ownership of the database.
 - Add migrations, authenticated identities, authorization, rate limiting and audit export before production use.
 - Expand the evaluation with independently authored, held-out, multilingual and adversarial cases. Current mock accuracy is 88.89% category and 83.33% priority; confidence is uncalibrated and Critical rules are conservative heuristics.
@@ -103,8 +105,7 @@ The Dockerfile installs the Python package and bundled assets, uses a non-root a
 - Current branch: `main`.
 - Remote: `https://github.com/batuhanozen/ai-workflow-automation.git`.
 - Local `HEAD` and live GitHub `refs/heads/main` at review time: `2e94f71013dbd5f08390713788e25f1725721c16` (`Update - 1`).
-- The initial MVP is already pushed. The working tree was clean at review start.
-- This review adds uncommitted fixes, regression tests, formatting, documentation, and a screenshot. Those changes are **not yet on GitHub**. No commit or push was performed because the request was to review/fix and report publication status.
+- The review's fixes, regression tests, formatting, documentation, and screenshot were committed afterwards as `246fbb8` (`Update 2`). On 2026-11-10 `main` and `origin/main` pointed to that commit.
 - Repository visibility and remote CI conclusions were not verified.
 
 ## Blocked commands and approval review

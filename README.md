@@ -209,7 +209,7 @@ node --check app/static/app.js  # Optional JS syntax check; Node is not needed t
 
 Tests use temporary SQLite databases and mocked providers, including an intercepted live HTTP adapter. They cover creation, persistence, strict output validation, invalid JSON, evidence rules, timeout and HTTP failure handling, backoff/exhaustion, fallbacks, retries, restart recovery, concurrent processing claims, optimistic review conflicts, immutable AI history, authentication, and API validation. No paid API access is needed.
 
-GitHub Actions is configured for Python 3.11, 3.12, and 3.13. Local verification and its limits are recorded in [docs/verification.md](docs/verification.md). The final engineering review, fixes, security checks, and GitHub publication status are in [docs/engineering-review.md](docs/engineering-review.md).
+GitHub Actions is configured for Python 3.11, 3.12, and 3.13 (with a 95% coverage floor), plus a frontend check job and a Docker build job; Dependabot proposes weekly dependency updates. Local verification and its limits are recorded in [docs/verification.md](docs/verification.md). The final engineering review, fixes, security checks, and GitHub publication status are in [docs/engineering-review.md](docs/engineering-review.md).
 
 ## Evaluation
 

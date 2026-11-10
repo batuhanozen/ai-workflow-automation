@@ -12,7 +12,9 @@ Local verification date: 2026-10-13. Runtime: Python 3.13.3 on macOS.
 - Browser: on a fresh temporary database, submitted an urgent synthetic request (Low), changed its priority, approved an action, checked the reviewed filter, submitted a failure case, and retried it while preserving both fallback records. No browser console errors or warnings were captured. Desktop and mobile screenshots are saved under `docs/screenshots/`.
 - Paid live LLM: not called. HTTP integration exercised with mocked responses, including status errors, timeout, refusal, incomplete output, and malformed envelopes.
 - Docker: provided but not built locally; Docker is unavailable in this environment.
-- CI: configured for Python 3.11–3.13; remote GitHub Actions has not been run as part of this local implementation.
+- CI: configured for Python 3.11–3.13, with a 95% coverage floor, a frontend job (Prettier 3.6.2 and `node --check`), and a Docker build job. Remote GitHub Actions results have not been inspected; the Docker job is the first container build of this project.
+
+Re-check on 2026-11-10 (commit `246fbb8`, fresh venv, Python 3.13.3, macOS): 70 tests passed at 99% coverage; `ruff check`, `ruff format --check`, `node --check app/static/app.js` and `python -m scripts.evaluate` all succeeded. Prettier, `pip-audit`, Docker, and the browser workflow were not re-run.
 
 A dependency deprecation warning from Starlette's TestClient/httpx compatibility layer may appear; it does not indicate a failed application test. The application uses HTTPX for provider transport.
 
